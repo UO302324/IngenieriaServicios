@@ -1,5 +1,26 @@
 import socket
 import sys
+import time
+
+def recibe_mensaje(sock):
+    buffer = []
+
+    while True:
+        byte = sock.recv(1)
+
+        if not byte:
+            if buffer:
+                return b"".join(buffer)
+            else:
+                return None  
+
+        buffer.append(byte)
+
+        if len(buffer) >= 2 and buffer[-2] == b"\r" and buffer[-1] == b"\n":
+            break  
+
+    return b"".join(buffer)        
+
 
 if len(sys.argv) > 1:
     puerto = int(sys.argv[1])
@@ -37,4 +58,5 @@ while True:
         respuesta = linea_reves + "\r\n"
 
         sd.sendall(respuesta.encode("utf-8"))
+    
     sd.close()
