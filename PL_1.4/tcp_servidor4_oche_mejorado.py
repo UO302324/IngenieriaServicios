@@ -45,8 +45,10 @@ while True:
     sd, origen = s.accept()
     print("Nuevo cliente conectado desde %s, %d" % origen)
 
+    time.sleep(1)
+
     while True:
-        mensaje_cod = sd.recv(80)
+        mensaje_cod = recibe_mensaje(sd)
 
         if not mensaje_cod:
             print("El cliente cerró la conexión")
